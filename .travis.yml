@@ -10,7 +10,6 @@ cache:
 before_script:
   - npm install -g npm@latest
 script:
-  - yarn add jest
   - yarn install
   - yarn run test
 jobs:
