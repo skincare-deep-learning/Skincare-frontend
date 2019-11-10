@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Requisitos-de-Software/2019.2-Shazam.svg?branch=master)](https://travis-ci.org/skincare-deep-learning/Skincare-frontend)
+
 # Skincare Mobile App
 React Native Mobile App using Expo + React Native 
 
