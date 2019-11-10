@@ -4172,11 +4172,6 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
-docopt@~0.4.0:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/docopt/-/docopt-0.4.1.tgz#e9ae4d3d14f7fea3e48019235ebc5f1004d22e87"
-  integrity sha1-6a5NPRT3/qPkgBkjXrxfEATSLoc=
-
 dom-converter@^0.2:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/dom-converter/-/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
@@ -7208,13 +7203,6 @@ jest@^24.7.1:
   dependencies:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
-
-jester@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/jester/-/jester-0.2.3.tgz#75520601839fb99b1eb8dc86697753e02ab8cde8"
-  integrity sha1-dVIGAYOfuZseuNyGaXdT4Cq4zeg=
-  dependencies:
-    docopt "~0.4.0"
 
 joi@14.0.4:
   version "14.0.4"
