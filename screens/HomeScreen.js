@@ -1,10 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Image,
   Platform,
   ScrollView,
   StyleSheet,
+  TextInput,
   Text,
   TouchableOpacity,
   View,
@@ -12,6 +13,50 @@ import {
 
 import { MonoText } from '../components/StyledText';
 
+
+export default class App extends Component {
+  state = {
+    todo: "This a message"
+  }
+  
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Skincare</Text>
+        <TextInput style={styles.input}></TextInput>    
+      </View>
+    );
+}
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ADD8E6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10
+  },
+  box: {
+    width:60,
+    height:60,
+    backgroundColor: 'blue'
+  },
+  input: {
+    paddingRight: 100,
+    height: 40,
+    borderColor: '#fff',
+    borderWidth: 1
+  }
+
+});
+
+
+/*
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
@@ -196,3 +241,4 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+*/
