@@ -10,6 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/images/skincare-logo.png",
     "splash": {
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
