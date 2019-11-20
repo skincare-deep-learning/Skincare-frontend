@@ -40,7 +40,8 @@ export default function HomeScreen(props) {
               width="100%"
               color={Colors.blue01}
               icon={<FontAwesome name="stethoscope" size={20} style={styles.startIcon}/>}
-              backgroundColor={Colors.white} />
+              backgroundColor={Colors.white}
+              onPress={() => navigate('Camera')} />
             <MainButton
               text="Sobre"
               color={Colors.blue01}

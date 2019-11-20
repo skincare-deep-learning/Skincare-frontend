@@ -4,7 +4,7 @@ import { Text, View, TouchableHighlight, StyleSheet, Image } from "react-native"
 import Colors from '../constants/Colors'
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function SettingsScreen() {
+export default function AboutScreen() {
   return (
     <View style={styles.container}>
       <ScrollView 
@@ -24,7 +24,7 @@ export default function SettingsScreen() {
   )
 }
 
-SettingsScreen.navigationOptions = {
+AboutScreen.navigationOptions = {
   title: 'Sobre o SkinCare',
 };
 
