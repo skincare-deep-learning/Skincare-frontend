@@ -6,7 +6,6 @@ import CameraBar from '../components/CameraBar';
 import Gallery from '../components/Gallery';
 
 export default class CameraScreen extends Component {
-
     camera = null;
     state = {
         captures: [],
@@ -81,6 +80,10 @@ export default class CameraScreen extends Component {
         );
     };
 };
+
+CameraScreen.navigationOptions = {
+    title: 'Tire uma foto da sua pele',
+  };
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
