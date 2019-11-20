@@ -13,7 +13,7 @@ import {
 
 import { MonoText } from '../components/StyledText';
 import Colors from '../constants/Colors';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, FontAwesome } from '@expo/vector-icons'
 
 import MainButton from '../components/buttons/mainButton'
 
@@ -39,7 +39,7 @@ export default function HomeScreen(props) {
               text="Começar"
               width="100%"
               color={Colors.blue01}
-              icon={<Ionicons name="md-camera" size={20} style={styles.startIcon}/>}
+              icon={<FontAwesome name="stethoscope" size={20} style={styles.startIcon}/>}
               backgroundColor={Colors.white} />
             <MainButton
               text="Sobre"
