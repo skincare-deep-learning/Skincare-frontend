@@ -25,6 +25,10 @@ MainButton.propTypes = {
     backgroundColor: propTypes.string
 }
 
+function emit() {
+
+}
+
 const styles = StyleSheet.create({
     wrapper: {
         padding: 15,
