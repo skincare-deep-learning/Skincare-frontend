@@ -1,3 +1,4 @@
+ 
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import { Text, View, TouchableHighlight, StyleSheet, Image } from "react-native";
@@ -16,7 +17,12 @@ export default function AboutScreen() {
               style={styles.logo}
           />
           <View style={styles.containerText}>
-            <Text>alo</Text>
+            <Text>
+              O problema de diagnóstico de câncer de pele tardio afeta a população como um todo, mas principalmente quem tem muita esposição a radiação ultravioleta diariamente. Cujo impacto é descobrimento e intervenção no câncer quando encontra-se em estágio avançado.
+            </Text>
+            <Text>
+            Tendo em vista essa contextualização, o objetivo do Skincare é ajudar Dermatologistas ou Clínicos Gerais para que realizam diagnóstico de câncer de pele instantâneo e não evasivo por imagem, diferente de Biópia ou exame de sangue.
+            </Text>
           </View>
         </View>
       </ScrollView>
