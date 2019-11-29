@@ -1,17 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View, StyleSheet, Dimensions, ImageBackground, Button } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import CameraBar from '../components/CameraBar';
-import Colors from '../constants/Colors';
-import ConfirmationButton from '../components/buttons/confirmationButton';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import api from '../services/api';
+import Gallery from '../components/Gallery';
 
 export default class CameraScreen extends Component {
     camera = null;
     state = {
-        image: null,
+        captures: [],
         // setting flash to be turned off by default
         flashMode: Camera.Constants.FlashMode.off,
         capturing: null,
@@ -19,15 +16,6 @@ export default class CameraScreen extends Component {
         cameraType: Camera.Constants.Type.back,
         hasCameraPermission: null,
     };
-
-    static navigationOptions = ({ navigation }) => ({
-        title: navigation.getParam('title', 'Tire uma foto da sua pele')
-    })
-
-    handleTitleChange() {
-        if(this.state.image) return this.props.navigation.setParams({ title: 'Deseja enviar esta foto?' })
-        else return this.props.navigation.setParams({ title: 'Tire uma foto da sua pele' })
-    }
 
     setFlashMode = (flashMode) => this.setState({ flashMode });
     setCameraType = (cameraType) => this.setState({ cameraType });
@@ -39,16 +27,20 @@ export default class CameraScreen extends Component {
     };
 
     handleShortCapture = async () => {
-        const options = { quality: 0.5, base64: true };
-        const photoData = await this.camera.takePictureAsync(options);
-        await this.setState({ capturing: false, image: photoData });
-        this.handleTitleChange()
+        const photoData = await this.camera.takePictureAsync();
+        this.setState({ capturing: false, captures: [photoData, ...this.state.captures] })
+    };
+
+    handleLongCapture = async () => {
+        const videoData = await this.camera.recordAsync();
+        this.setState({ capturing: false, captures: [videoData, ...this.state.captures] });
     };
 
     async componentDidMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
         const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
+
         this.setState({ hasCameraPermission });
     };
 
@@ -94,7 +86,7 @@ export default class CameraScreen extends Component {
     }
 
     render() {
-        const { hasCameraPermission, flashMode, cameraType, capturing, image } = this.state;
+        const { hasCameraPermission, flashMode, cameraType, capturing, captures } = this.state;
 
         if (hasCameraPermission === null) {
             return <View />;
@@ -102,96 +94,49 @@ export default class CameraScreen extends Component {
             return <Text>Access to camera has been denied.</Text>;
         }
 
-        if(!image){
-            return (
-                <Fragment>
-                  <View>
-                      <Camera
-                          type={cameraType}
-                          flashMode={flashMode}
-                          style={styles.camera}
-                          ref={camera => this.camera = camera}
-                      />
-                  </View>
-      
-                  <CameraBar 
-                      capturing={capturing}
-                      flashMode={flashMode}
-                      cameraType={cameraType}
-                      setFlashMode={this.setFlashMode}
-                      setCameraType={this.setCameraType}
-                      onCaptureIn={this.handleCaptureIn}
-                      onCaptureOut={this.handleCaptureOut}
-                      onShortCapture={this.handleShortCapture}
-                  />
-                </Fragment>
-            );
-        } else {
-            return(
-                <View style={styles.previewContainer}>
-                    <ImageBackground source={image} style={styles.preview}/>
-                    <View style={styles.menuContainer}>
-                        <ConfirmationButton
-                            color={Colors.blue01}
-                            width="50%"
-                            icon={<MaterialIcons name="cancel" size={70} style={styles.cancelIcon}/>}
-                            backgroundColor={Colors.blue00}
-                            onPress={this.newPhoto} />
-                        <ConfirmationButton
-                            color={Colors.blue01}
-                            width="50%"
-                            icon={<Ionicons name="ios-checkmark-circle" size={70} style={styles.confirmIcon}/>}
-                            backgroundColor={Colors.blue00}
-                            onPress={this.sendPhoto} />
-                    </View>
-                </View>
-            )
-        }
+        return (
+          <Fragment>
+            <View>
+                <Camera
+                    type={cameraType}
+                    flashMode={flashMode}
+                    style={styles.preview}
+                    ref={camera => this.camera = camera}
+                />
+            </View>
+            {captures.length > 0 && <Gallery captures={captures}/>}
+
+            <CameraBar 
+                capturing={capturing}
+                flashMode={flashMode}
+                cameraType={cameraType}
+                setFlashMode={this.setFlashMode}
+                setCameraType={this.setCameraType}
+                onCaptureIn={this.handleCaptureIn}
+                onCaptureOut={this.handleCaptureOut}
+                onLongCapture={this.handleLongCapture}
+                onShortCapture={this.handleShortCapture}
+            />
+      </Fragment>
+        );
     };
 };
 
-// CameraScreen.navigationOptions = {
-//     title: 'Tire uma foto da sua pele'
-//   };
+CameraScreen.navigationOptions = {
+    title: 'Tire uma foto da sua pele',
+  };
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    camera: {
-        height: winHeight,
-        width: winWidth,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-    },
-    previewContainer: {
-        flex: 1,
-        alignItems: 'center',
-        display: 'flex'
-    },
-    preview: {
-        width: winWidth,
-        height: winHeight - 200,
-    },
-    menuContainer: {
-        backgroundColor: Colors.blue00,
-        flex: 1,
-        right: 0,
-        left: 0,
-        bottom: 0,
-        width: winWidth,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-    confirmIcon: {
-        color: Colors.green01,
-        position: 'relative',
-    },
-    cancelIcon: {
-        color: Colors.red01,
-        position: 'relative',
-    },
+  preview: {
+    height: winHeight,
+    width: winWidth,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+},
+
 });
