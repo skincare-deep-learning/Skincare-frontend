@@ -1,46 +1,46 @@
+ 
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Text, View, TouchableHighlight, StyleSheet } from "react-native";
-import Colors from '../../constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
+import Colors from '../../constants/Colors';
 
-export default function MainButton(props) {
+export default function ConfirmationButton(props) {
     const {text, backgroundColor, color, icon, width} = props
     return(
         <TouchableHighlight style={[ {backgroundColor}, styles.wrapper]} onPress={props.onPress}>
             <View style={styles.btnTextWrapper}>
                 {icon}
-                <Text style={[ {color, width}, styles.btnText]}>{ text }</Text>
             </View>
         </TouchableHighlight>
     )
+
 }
 
-
-MainButton.propTypes = {
-    text: propTypes.string.isRequired,
+ConfirmationButton.propTypes = {
     color: propTypes.string,
-    icon: propTypes.object,
+    icon: propTypes.object.isRequired,
     width: propTypes.string,
     backgroundColor: propTypes.string
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 15,
-        display: "flex",
-        borderRadius: 40,
+        display: 'flex',
+        borderRadius: 50,
+        width: 100,
+        height: 100,
         borderWidth: 1,
-        borderColor: Colors.white,
-        marginBottom: 35,
-        alignItems: "center"
+        borderColor: Colors.blue00,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15
     },
     btnText: {
-        fontSize: 16,
-        textAlign: "center"
+        fontSize: 12,
+        textAlign: 'center'
     },
     btnTextWrapper: {
-        flexDirection: "row",
-        justifyContent: "flex-end"
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     },
 });
