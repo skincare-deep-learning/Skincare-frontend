@@ -57,6 +57,22 @@ export default class CameraScreen extends Component {
         this.handleTitleChange();
     }
 
+    getResult = (data) => {
+        const { navigate } = this.props.navigation;
+        let prob = 0;
+        let dis;
+
+        for(i in data){
+            if(data[i] > prob){
+                prob = data[i];
+                dis = i;
+            }
+        }
+        prob*=100;
+        prob = parseFloat(prob.toFixed(2))
+        navigate('Result', {probability:prob, disease:dis});
+    }
+
     sendPhoto = async () => {
         try {
             const imageData = new FormData();
@@ -66,7 +82,9 @@ export default class CameraScreen extends Component {
                 name: 'image'
             })
             const response = await api.post('classifier', imageData).then(res => {
-                alert('enviado com sucesso')
+                //alert('enviado com sucesso')
+                const { data } = res.data;
+                this.getResult(data);
             })
         } catch(e) {
             alert(e)
