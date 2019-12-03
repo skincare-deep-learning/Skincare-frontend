@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View, StyleSheet, Dimensions, ImageBackground, Button } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, ImageBackground, Image, Button } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import CameraBar from '../components/CameraBar';
@@ -9,16 +9,21 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import api from '../services/api';
 
 export default class CameraScreen extends Component {
-    camera = null;
-    state = {
-        image: null,
-        // setting flash to be turned off by default
-        flashMode: Camera.Constants.FlashMode.off,
-        capturing: null,
-        // start the back camera by default
-        cameraType: Camera.Constants.Type.back,
-        hasCameraPermission: null,
-    };
+    
+    constructor() {
+        super();
+        this.camera = null;
+        this.state = {
+            image: null,
+            // setting flash to be turned off by default
+            flashMode: Camera.Constants.FlashMode.off,
+            capturing: null,
+            // start the back camera by default
+            cameraType: Camera.Constants.Type.back,
+            hasCameraPermission: null,
+            showLoading: false,
+        };
+    }
 
     static navigationOptions = ({ navigation }) => ({
         title: navigation.getParam('title', 'Tire uma foto da sua pele')
@@ -75,19 +80,20 @@ export default class CameraScreen extends Component {
 
     sendPhoto = async () => {
         try {
+            this.setState({ showLoading: true });
             const imageData = new FormData();
             imageData.append('file', {
                 uri: this.state.image.uri,
                 type: 'image/jpg',
                 name: 'image'
-            })
+            });
             const response = await api.post('classifier', imageData).then(res => {
-                //alert('enviado com sucesso')
+                this.setState({ showLoading: false });
                 const { data } = res.data;
                 this.getResult(data);
-            })
-        } catch(e) {
-            alert(e)
+            });
+        }catch(e) {
+            alert(e);
         }
     }
 
@@ -111,7 +117,6 @@ export default class CameraScreen extends Component {
                           ref={camera => this.camera = camera}
                       />
                   </View>
-      
                   <CameraBar 
                       capturing={capturing}
                       flashMode={flashMode}
@@ -127,7 +132,13 @@ export default class CameraScreen extends Component {
         } else {
             return(
                 <View style={styles.previewContainer}>
-                    <ImageBackground source={image} style={styles.preview}/>
+                    <ImageBackground source={image} style={styles.preview} >
+                        { this.state.showLoading ?
+                            (<Image source={require('../assets/images/loading.gif')} />)
+                            : null
+                        }
+                    </ImageBackground>
+
                     <View style={styles.menuContainer}>
                         <ConfirmationButton
                             color={Colors.blue01}
@@ -148,9 +159,7 @@ export default class CameraScreen extends Component {
     };
 };
 
-// CameraScreen.navigationOptions = {
-//     title: 'Tire uma foto da sua pele'
-//   };
+//
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
@@ -167,11 +176,13 @@ const styles = StyleSheet.create({
     previewContainer: {
         flex: 1,
         alignItems: 'center',
-        display: 'flex'
+        display: 'flex',
     },
     preview: {
         width: winWidth,
         height: winHeight - 200,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     menuContainer: {
         backgroundColor: Colors.blue00,
@@ -191,5 +202,5 @@ const styles = StyleSheet.create({
     cancelIcon: {
         color: Colors.red01,
         position: 'relative',
-    },
+    }
 });
