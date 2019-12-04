@@ -31,7 +31,7 @@ export default function HomeScreen(props) {
             style={styles.logo}
           />
           <View style={styles.contentContainer}>
-            <Text style={styles.welcomeText}>Bem Vindo</Text>
+            <Text style={styles.welcomeText}>Bem-vindo</Text>
           </View>
           {/* Main Menu */}
           <View style={styles.menuContainer}>
